@@ -12,7 +12,7 @@ all create-react-app commands are valid.
 - Some models should be present to run
 
 ## How to Run
-Run `npm install` command inside the folder. Run `npm start` and it should start at http://localhost:3000.
+Run `npm install` command inside the folder. Run `npm run dev` and it should start at http://localhost:3000.
 
 ## Screenshots
 ![How does it look](screenshot.png)

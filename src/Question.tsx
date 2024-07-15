@@ -1,9 +1,13 @@
-export default function Question({questionContent, onQuestionClick, onQuestionChange}) {
-    const handleChange = (evt) => {
+import {SingleStrArgFunction, VoidCallbackFunction} from "./userTypes.ts";
+import React from "react";
+
+export default function QuestionBox({questionContent, onQuestionClick, onQuestionChange}:
+{questionContent: string, onQuestionClick: VoidCallbackFunction, onQuestionChange: SingleStrArgFunction}) {
+    const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         onQuestionChange(evt.target.value);
     }
 
-    const handleEnterButton = (evt) => {
+    const handleEnterButton = (evt: React.KeyboardEvent) => {
         if (evt.key === "Enter") {
             onQuestionClick();
         }

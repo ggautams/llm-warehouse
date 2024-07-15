@@ -1,12 +1,11 @@
 import {getAvailableModels} from "./api";
-import ReactDOMServer from 'react-dom/server';
 
 export async function getListOfModelNames() {
     const models = await getAvailableModels();
-    return models["models"].map(modelInfo => modelInfo.name);
+    return models["models"].map((modelInfo: { name: string; }) => modelInfo.name);
 }
 
-export function convertToHTML(rawString) {
+export function convertToHTML(rawString: string) {
     rawString = rawString.replace(/ /g, '&nbsp;').replace(/\n/g, '<br>');
     return rawString;
 }
@@ -14,7 +13,6 @@ export function convertToHTML(rawString) {
 export function manageHistory() {
 
 }
-
 
 
 

@@ -1,19 +1,18 @@
-const CodeFormatter = ({rawString}) => {
+const CodeFormatter = ({rawString}: {rawString: string}) => {
     return (
         <div>
             <code className="inline-block p-1 bg-gray-100 rounded-md text-gray-700 font-mono m-2">
-                <pre>
-                    <code>
-                        {rawString}
-                    </code>
-                </pre>
+            <pre>
+                <code>
+                    {rawString}
             </code>
-        </div>
-
+            </pre>
+            </code>
+            </div>
     );
 }
 
-export function formatTextToHtml(inString) {
+export function formatTextToHtml(inString: string) {
     // inString = inString.replace(/(`)([^`]+)(`)/g, (match, p1, p2, p3) => {
     //     return `${p1}<strong>${p2}</strong>${p3}`;
     // });

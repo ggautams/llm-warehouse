@@ -1,9 +1,9 @@
 import {convertToHTML} from "./service";
 import {formatTextToHtml} from "./shared";
 
-export default function Answer({content}) {
+export default function Answer({content}: {content: string}) {
     const parseContent = JSON.parse(content);
-    const formattedContent = parseContent.map(item => {
+    const formattedContent = parseContent.map((item: [string, string]) => {
         return (
             <div>
                 <div className="border border-gray-30 rounded-xl p-3 bg-gray-200 font-mono"

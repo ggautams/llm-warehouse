@@ -1,29 +1,32 @@
-import SimpleNavigation from "./simpleNavigation";
-import Question from "./question";
-import Answer from "./answer";
-import ConversationHistory from "./conversationHistory";
-import {useEffect, useState} from "react";
+import SimpleNavigation from "./SimpleNavigation";
+import QuestionBox from "./Question";
+import Answer from "./Answer";
+import ConversationHistory from "./ConversationHistory";
+import React, {useEffect, useState} from "react";
+import {ConversationStoreType, ConversationType} from "./userTypes.ts";
 
 export default function Layout() {
     const [currentModel, setCurrentModel] = useState("Not selected at the moment!");
-    const [conversation, setConversation] = useState([]);
-    const [question, setQuestion] = useState("");
-    const [repository, setRepository] = useState({}) // todo: should be fetched from the API
+    const [conversation, setConversation] = useState<ConversationType>([]);
+    const [question, setQuestion] = useState<string>("");
+    const [repository, setRepository] = useState<ConversationStoreType>({}) // todo: should be fetched from the API
     useEffect(() => {
         if (conversation.length > 0) {
             const updatedConversation = {[conversation[0][0]]: conversation};
             setRepository(prevState => ({...prevState, ...updatedConversation}))
         }
     }, [conversation]);
-    const onQuestionChange = (q) => {
+    const onQuestionChange = (q:string) => {
         setQuestion(q);
     }
     const onStartNewConversation = () => {
         setConversation([]);
         setQuestion("");
     }
-    const onLoadRecentConversation = (evt) => {
-        setConversation(repository[evt.target.innerHTML]);
+    const onLoadRecentConversation = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+        const eventTarget = evt.target as HTMLAnchorElement;
+        console.log(eventTarget);
+        setConversation(repository[eventTarget.innerHTML]);
     }
     const onQuestionClick = () => {
         let context = null;
@@ -34,7 +37,7 @@ export default function Layout() {
         if (question.replace(/^\s+|\s+$/gm, '') !== '') {
             if (currentModel) {
                 const body = {model: currentModel, prompt: question, stream: false, context:context};
-                fetch(`${process.env.REACT_APP_OLLAMA_HOST}/api/generate`, {
+                fetch(`${import.meta.env.VITE_REACT_APP_OLLAMA_HOST}/api/generate`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -47,10 +50,10 @@ export default function Layout() {
             }
         }
     }
-    const onModelSelection = (modelName) => {
+    const onModelSelection = (modelName:string) => {
         setCurrentModel(modelName);
         const body = {model: modelName, prompt: ""};
-        fetch(`${process.env.REACT_APP_OLLAMA_HOST}/api/generate`, {
+        fetch(`${import.meta.env.VITE_REACT_APP_OLLAMA_HOST}/api/generate`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -67,7 +70,7 @@ export default function Layout() {
                 <ConversationHistory questions={JSON.stringify(Object.keys(repository))} onLoadRecentConversation={onLoadRecentConversation}/>
                 <main className="flex flex-1 flex-col items-center justify-center w-4/5">
                     <Answer content={JSON.stringify(conversation)}/>
-                    <Question onQuestionClick={onQuestionClick} onQuestionChange={onQuestionChange} questionContent={question}/>
+                    <QuestionBox onQuestionClick={onQuestionClick} onQuestionChange={onQuestionChange} questionContent={question}/>
                 </main>
             </div>
         </div>
